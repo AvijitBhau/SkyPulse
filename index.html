@@ -37,56 +37,70 @@
                     </div>
                 </div>
             </section>
-            <div class="error-msg">Error log</div>
+            <div class="error-msg">
+                <p>🔑 Error log</p>
+            </div>
             <section id="weather-location">
                 <div class="weather-data">
-                    <h2>New Delhi</h2>
-                    <img src="" alt="weather-status">
-                    <p>34'C</p>
-                    <p><a href="">'C</a> | <a href="">'F</a></p>
-                    <p>Cloud status</p>
-                    <p>Weather feeling</p>
+                    <div class="heading">
+                        <p>New Delhi</p>
+                        <span>IN</span>
+                    </div>
+                    <div class="forecast-weather-data">
+                        <p class="day-night-icon">🌙</p>
+                        <p class="temperature">34°C</p>
+                        <p class="degree-check"><a href="#" class="active">°C</a> | <a href="#">°F</a></p>
+                    </div>
+                    <p class="cloud-status">Cloudy</p>
+                    <p class="temp-status">Feels like <span class="some-space">39°C</span> H: <span>37°C</span> · L: <span>30°C</span></p>
                 </div>
                 <div class="weather-status-icon">
                     <div class="weather-icon">
-                        <img src="" alt="cloud">
+                        <p>🌤️</p>
                     </div>
                     <div class="sun-status">
                         <div class="sunrise">
-                            <p>Sunrise</p>
-                            <p>Time</p>
+                            <p class="sun-point">🌅 Sunrise</p>
+                            <p>06:00</p>
                         </div>
+                        <div class="vert-bar"></div>
                         <div class="sunset">
-                            <p>Sunset</p>
-                            <p>Time</p>
+                            <p class="sun-point">🌇 Sunset</p>
+                            <p>19:30</p>
                         </div>
                     </div>
                 </div>
             </section>
             <section id="weather-characteristics">
-                <div id="humidity">
+                <div id="humidity" class="cards">
+                    <span>💧</span>
                     <p>Humidity</p>
                     <progress value="42" max="100"></progress>
                 </div>
-                <div id="wind-speed">
+                <div id="wind-speed" class="cards">
+                    <span>💨</span>
                     <p>Wind Speed</p>
                     <p>15km/h</p>
                 </div>
-                <div id="pressure">
+                <div id="pressure" class="cards">
+                    <span>🧭</span>
                     <p>Pressure</p>
                     <p>1002hPa</p>
                 </div>
-                <div id="visiblility">
+                <div id="visiblility" class="cards">
+                    <span>👁️</span>
                     <p>Visiblility</p>
                     <progress value="80" max="100"></progress>
                 </div>
-                <div id="cloud-cover">
+                <div id="cloud-cover" class="cards">
+                    <span>☁️</span>
                     <p>Cloud-Cover</p>
                     <progress value="15" max="100"></progress>
                 </div>
-                <div id="uv-index">
+                <div id="uv-index" class="cards">
+                    <span>☀️</span>
                     <p>UV Index</p>
-                    <progress value="100"></progress>
+                    <progress value="100" max="100"></progress>
                 </div>
             </section>
             <section id="hourly-forecast">
