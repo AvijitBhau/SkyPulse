@@ -11,8 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/font-awesome.min.css">
 
-
-
 </head>
 
 <body>
@@ -20,7 +18,7 @@
         <div id="content-box">
             <header>
                 <div class="logo">
-                    <h2>SkyPulse</h2>
+                    <h2><span>🌤</span> SkyPulse</h2>
                 </div>
                 <div class="clock">
                     <p>Wednesday, 24 June</p>
@@ -74,41 +72,61 @@
             <section id="weather-characteristics">
                 <div id="humidity" class="cards">
                     <span>💧</span>
-                    <p>Humidity</p>
+                    <p class="stat-heading">HUMIDITY</p>
+                    <p class="stat-status">42%</p>
                     <progress value="42" max="100"></progress>
                 </div>
                 <div id="wind-speed" class="cards">
                     <span>💨</span>
-                    <p>Wind Speed</p>
-                    <p>15km/h</p>
+                    <p class="stat-heading">WIND SPEED</p>
+                    <p class="stat-status">15 km/h</p>
                 </div>
                 <div id="pressure" class="cards">
                     <span>🧭</span>
-                    <p>Pressure</p>
-                    <p>1002hPa</p>
+                    <p class="stat-heading">PRESSURE</p>
+                    <p class="stat-status">1002 hPa</p>
+                    <progress value="67" max="100" style="width: 50%;"></progress>
                 </div>
-                <div id="visiblility" class="cards">
+                <div id="visibility" class="cards">
                     <span>👁️</span>
-                    <p>Visiblility</p>
+                    <p class="stat-heading">VISIBILITY</p>
+                    <p class="stat-status">7.0 km</p>
                     <progress value="80" max="100"></progress>
                 </div>
                 <div id="cloud-cover" class="cards">
                     <span>☁️</span>
-                    <p>Cloud-Cover</p>
-                    <progress value="15" max="100"></progress>
+                    <p class="stat-heading">CLOUD COVER</p>
+                    <p class="stat-status">20%</p>
+                    <progress value="20" max="100"></progress>
                 </div>
                 <div id="uv-index" class="cards">
                     <span>☀️</span>
-                    <p>UV Index</p>
+                    <p class="stat-heading">UV INDEX</p>
+                    <p class="stat-status">0 - Night</p>
                     <progress value="100" max="100"></progress>
                 </div>
             </section>
             <section id="hourly-forecast">
-                <p>HOURLY FORECAST</p>
+                <p>⏰ HOURLY FORECAST</p>
                 <div id="timely-forecast">
-                    <div class="forecast-on-time">Now</div>
-                    <div class="forecast-on-time">1hr</div>
-                    <div class="forecast-on-time">2hr</div>
+                    <div class="forecast-on-time active-card">
+                        <p class="weather-time">Now</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>18%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">23:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>27%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">02:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>11%</p>
+                    </div>
                 </div>
             </section>
             <section id="weekly-forecast">

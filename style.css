@@ -86,7 +86,6 @@ header {
     padding: 10px 0;
     display: flex;
     align-items: center;
-    /* border: 2px solid black; */
 }
 
 .input-box-content {
@@ -157,7 +156,6 @@ header {
 }
 
 .error-msg p {
-    /* border: 2px solid blue; */
     padding: 10px 20px;
     margin: 10px 0;
     background: rgba(245, 158, 11, 0.12);
@@ -168,7 +166,6 @@ header {
 }
 
 #weather-location {
-    /* border: 2px solid red; */
     display: flex;
     justify-content: space-between;
     background: var(--glass-bg);
@@ -183,7 +180,6 @@ header {
 }
 
 .weather-data {
-    /* border: 2px solid green; */
     padding: 20px 50px;
 }
 
@@ -192,7 +188,6 @@ header {
     justify-content: space-between;
     align-items: end;
     width: calc(100% - 40px);
-    /* border: 2px solid; */
 }
 
 .heading p {
@@ -213,7 +208,6 @@ header {
 }
 
 .forecast-weather-data {
-    /* border: 2px solid magenta; */
     display: grid;
     grid-template-rows: 2fr 1fr;
     grid-template-columns: .5fr 1fr;
@@ -225,7 +219,6 @@ header {
 }
 
 .day-night-icon {
-    /* border: 2px solid cyan; */
     grid-area: first;
     display: flex;
     justify-content: center;
@@ -246,7 +239,6 @@ header {
 }
 
 .degree-check {
-    /* border: 2px solid rgb(169, 255, 116); */
     grid-area: third;
     color: #9ca3af;
     
@@ -267,13 +259,11 @@ header {
 }
 
 .cloud-status {
-    /* border: 2px solid blue; */
     font-size: large;
     color: rgb(41, 41, 41);
 }
 
 .temp-status {
-    /* border: 2px solid yellowgreen; */
     padding-top: 10px;
     color: #9ca3af;
 }
@@ -287,14 +277,12 @@ header {
 }
 
 .weather-status-icon {
-    /* border: 2px solid green; */
     width: 20%;
     padding: 30px;
 }
 
 .weather-icon {
     font-size: 7rem;
-    /* border: 2px solid red; */
     display: grid;
     place-items: center;
 }
@@ -317,11 +305,9 @@ header {
     padding: 10px;
     border-radius: 10px;
     background-color: var(--glass-bg);
-    /* border: 2px solid blue; */
 }
 
 .sunrise, .sunset {
-    /* border: 2px solid black; */
     text-align: center;
 }
 
@@ -341,14 +327,12 @@ header {
 }
 
 #weather-characteristics {
-    /* border: 2px solid magenta; */
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
 }
 
 .cards {
-    /* border: 2px solid red; */
     background-color: var(--glass-bg);
     border-radius: 20px;
     height: 10rem;
@@ -356,16 +340,106 @@ header {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    transition: all .3s ease-in-out;
+}
+
+.cards:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-hover-shadow);
+
 }
 
 .cards p {
     margin: 0;
 }
 
-progress {
+#weather-characteristics progress {
     width: 100%;
     /* border-radius: 100%; */
     /* background: linear-gradient(90deg, #818cf8, #6366f1);
     transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); */
 }
+
+.stat-heading {
+    font-weight: 600;
+    color: #9ca3af;
+    font-size: small;
+}
+
+.stat-status {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+#weather-characteristics span {
+    font-size: x-large;
+    margin: 10px 0;
+}
+
+#hourly-forecast {
+    margin: 20px 0;
+    letter-spacing: 1px;
+}
+
+#hourly-forecast p:first-of-type {
+    color: #4b5563;
+    font-weight: 700;
+}
+
+#timely-forecast {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    min-height: 20vh;
+    background: var(--glass-bg);
+    border-radius: 20px;
+    padding: 15px;
+    gap: 15px;
+    box-shadow: var(--glass-shadow);
+    transition: all .3s ease-in-out;
+}
+
+#timely-forecast:hover {
+    box-shadow: var(--glass-hover-shadow);
+}
+
+#timely-forecast p {
+    font-weight: 600;
+    margin: 15% 0;
+}
+
+.forecast-on-time {
+    background-color: var(--glass-bg);
+    border-radius: 20px;
+    text-align: center;
+    cursor: default;
+    transition: all .2s ease;
+}
+
+.forecast-on-time:hover {
+    transform: translateY(-4px);
+    background-color: #ffffffd7;
+}
+
+.active-card {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(251, 113, 133, 0.1));
+    border: 1px solid;
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.droplet-percent {
+    color: rgb(0, 60, 255);
+}
+
+.weather-time, .droplet-percent {
+    font-size: small;
+}
+
+.temp {
+    font-size: large;
+    font-weight: bold;
+}
+
+.sun-moon {
+    font-size: x-large;
+}
+
