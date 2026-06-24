@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/font-awesome.min.css">
+
+
+
+</head>
+
+<body>
+    <div id="parent">
+        <div id="content-box">
+            <header>
+                <div class="logo">
+                    <h2>SkyPulse</h2>
+                </div>
+                <div class="clock">
+                    <p>Wednesday, 24 June</p>
+                    <p>06:00:37 pm</p>
+                </div>
+            </header>
+            <section id="input-box">
+                <div class="input-box-content">
+                    <span>🔍</span>
+                    <input type="text" name="input-place" id="" placeholder="Search for a city, e.g. London, New York..." aria-autocomplete="off">
+                    <div id="locator">
+                        <button>Search</button>
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                    </div>
+                </div>
+            </section>
+            <div class="error-msg">Error log</div>
+            <section id="weather-location">
+                <div class="weather-data">
+                    <h2>New Delhi</h2>
+                    <img src="" alt="weather-status">
+                    <p>34'C</p>
+                    <p><a href="">'C</a> | <a href="">'F</a></p>
+                    <p>Cloud status</p>
+                    <p>Weather feeling</p>
+                </div>
+                <div class="weather-status-icon">
+                    <div class="weather-icon">
+                        <img src="" alt="cloud">
+                    </div>
+                    <div class="sun-status">
+                        <div class="sunrise">
+                            <p>Sunrise</p>
+                            <p>Time</p>
+                        </div>
+                        <div class="sunset">
+                            <p>Sunset</p>
+                            <p>Time</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="weather-characteristics">
+                <div id="humidity">
+                    <p>Humidity</p>
+                    <progress value="42" max="100"></progress>
+                </div>
+                <div id="wind-speed">
+                    <p>Wind Speed</p>
+                    <p>15km/h</p>
+                </div>
+                <div id="pressure">
+                    <p>Pressure</p>
+                    <p>1002hPa</p>
+                </div>
+                <div id="visiblility">
+                    <p>Visiblility</p>
+                    <progress value="80" max="100"></progress>
+                </div>
+                <div id="cloud-cover">
+                    <p>Cloud-Cover</p>
+                    <progress value="15" max="100"></progress>
+                </div>
+                <div id="uv-index">
+                    <p>UV Index</p>
+                    <progress value="100"></progress>
+                </div>
+            </section>
+            <section id="hourly-forecast">
+                <p>HOURLY FORECAST</p>
+                <div id="timely-forecast">
+                    <div class="forecast-on-time">Now</div>
+                    <div class="forecast-on-time">1hr</div>
+                    <div class="forecast-on-time">2hr</div>
+                </div>
+            </section>
+            <section id="weekly-forecast">
+                <p>5 - Day Forecast</p>
+                <div class="day-wise-forecast">
+                    <div class="day-forecast">
+                        <p>Today</p>
+                        <img src="" alt="weather-status-icon">
+                        <p>Weather Status</p>
+                        <p>temperture day</p>
+                        <p>temperture night</p>
+                        <progress value="46" max="100"></progress>
+                    </div>
+                    <div class="day-forecast">
+                        <p>Thurday</p>
+                        <img src="" alt="weather-status-icon">
+                        <p>Weather Status</p>
+                        <p>temperture day</p>
+                        <p>temperture night</p>
+                        <progress value="46" max="100"></progress>
+                    </div>
+                    <div class="day-forecast">
+                        <p>Friday</p>
+                        <img src="" alt="weather-status-icon">
+                        <p>Weather Status</p>
+                        <p>temperture day</p>
+                        <p>temperture night</p>
+                        <progress value="46" max="100"></progress>
+                    </div>
+                    <div class="day-forecast">
+                        <p>Saturday</p>
+                        <img src="" alt="weather-status-icon">
+                        <p>Weather Status</p>
+                        <p>temperture day</p>
+                        <p>temperture night</p>
+                        <progress value="46" max="100"></progress>
+                    </div>
+                    <div class="day-forecast">
+                        <p>Sunday</p>
+                        <img src="" alt="weather-status-icon">
+                        <p>Weather Status</p>
+                        <p>temperture day</p>
+                        <p>temperture night</p>
+                        <progress value="46" max="100"></progress>
+                    </div>
+                </div>
+            </section>
+            <section id="weather-details">
+                <div class="wind-details"></div>
+                <div class="location-info"></div>
+            </section>
+            <footer>
+                <p>Developed by <a href="">Avijit Agarwal </a>(AvijitFolio)</p>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

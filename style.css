@@ -1,0 +1,155 @@
+:root {
+    --font-main: 'Outfit', sans-serif;
+    --font-sub: 'Inter', sans-serif;
+    --sky-1: #e0f2fe;
+    --sky-2: #f0e9ff;
+    --sky-3: #fde8d8;
+    --sky-4: #dff7ee;
+    --primary: #6366f1;
+    --primary-light: #818cf8;
+    --accent: #f59e0b;
+    --rose: #fb7185;
+    --teal: #2dd4bf;
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.75);
+    --glass-shadow: 0 8px 40px rgba(99, 102, 241, 0.12), 0 2px 12px rgba(0, 0, 0, 0.06);
+    --glass-hover-shadow: 0 16px 60px rgba(99, 102, 241, 0.2), 0 4px 20px rgba(0, 0, 0, 0.08);
+    --text-primary: #1e1b4b;
+    --text-secondary: #4b5563;
+    --text-muted: #9ca3af;
+    --max-w: 1080px;
+    --radius: 24px;
+    --radius-sm: 14px;
+    --radius-xs: 10px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    color: var(--text-primary);
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0e9ff 35%, #fde8d8 65%, #dff7ee 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#parent {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+
+}
+
+#content-box {
+    width: min(70%, 1080px);
+    min-height: 100vh;
+    border: 2px solid red;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    padding-left: 5%;
+}
+
+.logo h2 {
+    font-weight: bold;
+}
+
+.clock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
+
+.clock p:first-of-type {
+    margin-bottom: 0;
+    font-size: medium;
+}
+
+.clock p:last-of-type {
+    margin-top: 0;
+    font-size: x-large;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+#input-box {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.input-box-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    border-radius: 30px;
+    transition: all .3s ease-in-out;
+}
+
+.input-box-content:hover {
+    box-shadow: var(--glass-hover-shadow);
+}
+
+.input-box-content span {
+    padding: 20px;
+    font-size: large;
+}
+
+.input-box-content input {
+    border: none;
+    height: 100%;
+    width: 75%;
+    font-size: medium;
+    outline: none;
+    background-color: transparent;
+}
+
+#locator {
+    width: 20%;
+    padding: 10px;
+    text-align: end;
+}
+
+#locator button {
+    padding: 10px 30px;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    font-size: medium;
+    font-weight: 600;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    transition: transform .3s ease-in-out;
+}
+
+#locator button:hover {
+    transform: translateY(-4px);
+}
+
+#locator i {
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid ;
+    border-radius: 50%;
+    color: black;
+}
+
+#locator i:hover {
+    transform: scale(1.1);
+}
+
