@@ -220,7 +220,8 @@ header {
         'first second'
         'first third';
     min-height: 10vh;
-    width: calc(100% + 50px);
+    width: 100%;
+    max-width: 100%;
 }
 
 .day-night-icon {
@@ -556,4 +557,215 @@ footer p {
 footer a {
     text-decoration: none;
     color: navy;
+}
+
+@media (max-width: 900px) {
+    #content-box {
+        width: min(92%, 1080px);
+        padding: 20px 0;
+    }
+
+    header {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .clock {
+        align-items: flex-start;
+    }
+
+    #input-box {
+        padding: 10px 0;
+    }
+
+    .input-box-content {
+        padding: 12px;
+        height: 5vh;
+    }
+
+
+    #locator {
+        width: auto;
+        text-align: right;
+        margin-left: auto;
+    }
+
+    #locator button {
+        width: 100%;
+        padding: 10px;
+        max-width: 200px;
+    }
+
+    #weather-location {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .weather-data,
+    .weather-status-icon {
+        width: 100%;
+    }
+
+    .weather-status-icon {
+        min-width: 0;
+    }
+
+    .forecast-weather-data {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            'first second'
+            'third third';
+        gap: 15px;
+    }
+
+    #weather-characteristics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #timely-forecast {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .day-wise-forecast {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    #weather-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    #content-box {
+        width: min(96%, 1080px);
+        padding: 10px 0;
+    }
+
+    header {
+        justify-content: space-between;
+    }
+
+    .clock {
+        align-items: flex-start;
+    }
+
+    .input-box-content {
+        padding: 14px;
+    }
+
+    .input-box-content span {
+        padding: 12px;
+    }
+
+    #locator {
+        width: 100%;
+        text-align: right;
+        margin: 0;
+    }
+
+    #locator button {
+        width: 100%;
+    }
+
+    .heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .forecast-weather-data {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            'first'
+            'second'
+            'third';
+    }
+
+    .temperature {
+        justify-content: flex-start;
+        font-size: 3.5rem;
+    }
+
+    .weather-status-icon {
+        padding: 0;
+    }
+
+    .sun-status {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #weather-characteristics {
+        grid-template-columns: 1fr;
+    }
+
+    #timely-forecast {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .day-wise-forecast {
+        grid-template-columns: 1fr;
+    }
+
+    .day-forecast {
+        padding: 18px;
+    }
+
+    #weather-details {
+        gap: 15px;
+    }
+}
+
+/* Fix overflow and card sizing around 1024px (e.g. 1021x928) */
+@media (max-width: 1024px) {
+    /* Make hourly forecast wrap and reduce spacing */
+    #timely-forecast {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        padding: 12px;
+        gap: 12px;
+        min-height: auto;
+    }
+
+    /* Prevent the 5-day forecast from forcing horizontal scroll */
+    .day-wise-forecast {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        align-items: start;
+    }
+
+    /* Make cards smaller and text scale down */
+    .day-forecast {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+
+    .day-forecast span {
+        font-size: 1.6rem;
+    }
+
+    .day-forecast p, .day-forecast .temp, .day-forecast .temp-night {
+        margin: 4px 0;
+        font-size: 0.95rem;
+    }
+
+    /* Reduce padding of general cards to avoid stretching */
+    .cards {
+        padding: 14px;
+        height: auto;
+    }
+
+    /* Slightly reduce main heading size on narrower desktops */
+    .heading p {
+        font-size: 2rem;
+    }
+
+    /* Make sure weather location area can wrap */
+    #weather-location {
+        align-items: flex-start;
+    }
+
+    /* Ensure no element forces horizontal scroll */
+    #content-box, #parent {
+        overflow-x: hidden;
+    }
 }
