@@ -153,11 +153,16 @@ header {
     margin: 10px;
     border: 2px solid;
     border-radius: 50%;
+    cursor: pointer;
     color: black;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    transition: all .3s ease;
 }
 
 #locator i:hover {
     transform: scale(1.1);
+    background: rgba(99, 102, 241, 0.2);
 }
 
 .error-msg p {
@@ -585,14 +590,12 @@ footer a {
 
 
     #locator {
-        width: auto;
+        width: calc(100% - 25%);
         text-align: right;
         margin-left: auto;
     }
 
     #locator button {
-        width: 100%;
-        padding: 10px;
         max-width: 200px;
     }
 
@@ -654,17 +657,16 @@ footer a {
     }
 
     .input-box-content span {
-        padding: 12px;
+        padding: 5px;
     }
 
     #locator {
-        width: 100%;
+        width: fit-content;
         text-align: right;
         margin: 0;
-    }
-
-    #locator button {
-        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: end;
     }
 
     .heading {
@@ -716,9 +718,11 @@ footer a {
     }
 }
 
-/* Fix overflow and card sizing around 1024px (e.g. 1021x928) */
-@media (max-width: 1024px) {
-    /* Make hourly forecast wrap and reduce spacing */
+@media (max-width: 1324px) {
+    #locator {
+        width: calc(100% - 25%);
+    }
+
     #timely-forecast {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         padding: 12px;
@@ -726,14 +730,12 @@ footer a {
         min-height: auto;
     }
 
-    /* Prevent the 5-day forecast from forcing horizontal scroll */
     .day-wise-forecast {
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
         align-items: start;
     }
 
-    /* Make cards smaller and text scale down */
     .day-forecast {
         padding: 14px;
         font-size: 0.95rem;
@@ -748,23 +750,19 @@ footer a {
         font-size: 0.95rem;
     }
 
-    /* Reduce padding of general cards to avoid stretching */
     .cards {
         padding: 14px;
         height: auto;
     }
 
-    /* Slightly reduce main heading size on narrower desktops */
     .heading p {
         font-size: 2rem;
     }
 
-    /* Make sure weather location area can wrap */
     #weather-location {
         align-items: flex-start;
     }
 
-    /* Ensure no element forces horizontal scroll */
     #content-box, #parent {
         overflow-x: hidden;
     }
