@@ -29,7 +29,14 @@
             <section id="input-box">
                 <div class="input-box-content">
                     <span>🔍</span>
-                    <input type="text" name="input-place" id="input-location" placeholder="Search for a city, e.g. London, New York..." aria-autocomplete="off">
+                    <input type="text" name="input-place" id="input-location" placeholder="Search for a city, e.g. London, New York..." autocomplete="off">
+                    <div id="suggestion-box" class="hide">
+                        <p class="suggestions">There</p><hr>
+                        <p class="suggestions">No</p><hr>
+                        <p class="suggestions">De</p><hr>
+                        <p class="suggestions">Wo</p><hr>
+                        <p class="suggestions">Ma</p>
+                    </div>
                     <div id="locator">
                         <button id="search-weather">Search</button>
                         <i class="fa-solid fa-location-crosshairs"></i>
@@ -47,11 +54,11 @@
                     </div>
                     <div class="forecast-weather-data">
                         <p class="day-night-icon">🌙</p>
-                        <p class="temperature">0°C</p>
+                        <p class="temperature">00°C</p>
                         <p class="degree-check"><a href="#" class="active">°C</a> | <a href="#">°F</a></p>
                     </div>
                     <p class="cloud-status">Cloudy</p>
-                    <p class="temp-status">Feels like <span class="some-space">39°C</span> H: <span>37°C</span> · L: <span>30°C</span></p>
+                    <p class="temp-status">Feels like <span class="some-space">39°C</span> H: <span id="highTemp">37°C</span> · L: <span id="lowTemp">30°C</span></p>
                 </div>
                 <div class="weather-status-icon">
                     <div class="weather-icon">
@@ -119,55 +126,55 @@
                     <div class="forecast-on-time active-card">
                         <p class="weather-time">Now</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>18%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">23:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>27%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
                         <p class="sun-moon">🌙</p>
-                        <p class="temp">29°C</p>
+                        <p class="day-temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                 </div>
@@ -176,7 +183,7 @@
                 <p class="sec-head">📅 5 - DAY FORECAST</p>
                 <div class="day-wise-forecast">
                     <div class="day-forecast">
-                        <p>TODAY</p>
+                        <p class="daywise">TODAY</p>
                         <span>⛅</span>
                         <p>Partly Cloudy</p>
                         <p class="temp">40°C</p>
@@ -184,7 +191,7 @@
                         <progress value="46" max="100"></progress>
                     </div>
                     <div class="day-forecast">
-                        <p>FRI</p>
+                        <p class="daywise">FRI</p>
                         <span>☀️</span>
                         <p>Partly Cloudy</p>
                         <p class="temp">40°C</p>
@@ -192,7 +199,7 @@
                         <progress value="46" max="100"></progress>
                     </div>
                     <div class="day-forecast">
-                        <p>SAT</p>
+                        <p class="daywise">SAT</p>
                         <span>🌧️</span>
                         <p>Partly Cloudy</p>
                         <p class="temp">39°C</p>
@@ -200,7 +207,7 @@
                         <progress value="46" max="100"></progress>
                     </div>
                     <div class="day-forecast">
-                        <p>SUN</p>
+                        <p class="daywise">SUN</p>
                         <span>🌤️</span>
                         <p>Partly Cloudy</p>
                         <p class="temp">40°C</p>
@@ -208,7 +215,7 @@
                         <progress value="46" max="100"></progress>
                     </div>
                     <div class="day-forecast">
-                        <p>MON</p>
+                        <p class="daywise">MON</p>
                         <span>🌤️</span>
                         <p>Partly Cloudy</p>
                         <p class="temp">40°C</p>
@@ -262,7 +269,7 @@
                 </div>
             </section>
             <footer>
-                <p> Built with ❤️ by <a href="">Avijit Agarwal </a>(AvijitFolio)</p>
+                <p> Built with ❤️ by <a href="https://github.com/AvijitBhau" target="_blank">Avijit Agarwal </a>(AvijitFolio)</p>
             </footer>
         </div>
     </div>
