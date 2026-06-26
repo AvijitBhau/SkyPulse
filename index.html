@@ -29,25 +29,25 @@
             <section id="input-box">
                 <div class="input-box-content">
                     <span>🔍</span>
-                    <input type="text" name="input-place" id="" placeholder="Search for a city, e.g. London, New York..." aria-autocomplete="off">
+                    <input type="text" name="input-place" id="input-location" placeholder="Search for a city, e.g. London, New York..." aria-autocomplete="off">
                     <div id="locator">
-                        <button>Search</button>
+                        <button id="search-weather">Search</button>
                         <i class="fa-solid fa-location-crosshairs"></i>
                     </div>
                 </div>
             </section>
             <div class="error-msg">
-                <p>🔑 Error log</p>
+                <p class="hide">🔑 Enter a location first!</p>
             </div>
             <section id="weather-location">
                 <div class="weather-data">
                     <div class="heading">
-                        <p>New Delhi</p>
-                        <span>IN</span>
+                        <p>Delhi</p>
+                        <span class="country-code">IN</span>
                     </div>
                     <div class="forecast-weather-data">
                         <p class="day-night-icon">🌙</p>
-                        <p class="temperature">34°C</p>
+                        <p class="temperature">0°C</p>
                         <p class="degree-check"><a href="#" class="active">°C</a> | <a href="#">°F</a></p>
                     </div>
                     <p class="cloud-status">Cloudy</p>
@@ -74,37 +74,43 @@
                 <div id="humidity" class="cards">
                     <span>💧</span>
                     <p class="stat-heading">HUMIDITY</p>
-                    <p class="stat-status">42%</p>
-                    <progress value="42" max="100"></progress>
+                    <p class="stat-status humid">%</p>
+                    <progress value="0" max="100" id="humid-prog" class="progress"></progress>
                 </div>
                 <div id="wind-speed" class="cards">
                     <span>💨</span>
                     <p class="stat-heading">WIND SPEED</p>
-                    <p class="stat-status">15 km/h</p>
+                    <p class="stat-status windy">km/h</p>
                 </div>
                 <div id="pressure" class="cards">
                     <span>🧭</span>
                     <p class="stat-heading">PRESSURE</p>
-                    <p class="stat-status">1002 hPa</p>
-                    <progress value="67" max="100" style="width: 50%;"></progress>
+                    <p class="stat-status heavy-pressure">hPa</p>
+                    <progress value="0" max="2000" id="press-prog" class="progress"></progress>
                 </div>
                 <div id="visibility" class="cards">
                     <span>👁️</span>
                     <p class="stat-heading">VISIBILITY</p>
-                    <p class="stat-status">7.0 km</p>
-                    <progress value="80" max="100"></progress>
+                    <p class="stat-status visible-area">km</p>
+                    <progress value="0" max="240000" id="visib-prog" class="progress"></progress>
                 </div>
                 <div id="cloud-cover" class="cards">
                     <span>☁️</span>
                     <p class="stat-heading">CLOUD COVER</p>
-                    <p class="stat-status">20%</p>
-                    <progress value="20" max="100"></progress>
+                    <p class="stat-status cover-cloud">%</p>
+                    <progress value="0" max="100" id="cloud-prog" class="progress"></progress>
                 </div>
                 <div id="uv-index" class="cards">
                     <span>☀️</span>
                     <p class="stat-heading">UV INDEX</p>
-                    <p class="stat-status">0 - Night</p>
-                    <progress value="100" max="100"></progress>
+                    <p class="stat-status ultraviolet">0</p>
+                    <progress value="0" max="11" id="uv-prog"></progress>
+                    <div class="small-titles">
+                        <p>Low</p>
+                        <p>Mod</p>
+                        <p>High</p>
+                        <p>V.High</p>
+                    </div>
                 </div>
             </section>
             <section id="hourly-forecast">
@@ -121,6 +127,42 @@
                         <p class="sun-moon">🌙</p>
                         <p class="temp">29°C</p>
                         <p class="droplet-percent"><span>💧</span>27%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">02:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>11%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">02:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>11%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">02:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>11%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">02:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>11%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">02:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>11%</p>
+                    </div>
+                    <div class="forecast-on-time">
+                        <p class="weather-time">02:00</p>
+                        <p class="sun-moon">🌙</p>
+                        <p class="temp">29°C</p>
+                        <p class="droplet-percent"><span>💧</span>11%</p>
                     </div>
                     <div class="forecast-on-time">
                         <p class="weather-time">02:00</p>
@@ -181,19 +223,19 @@
                     <div class="details">
                         <div class="det">
                             <p>Speed</p>
-                            <P>15 Km/h</P>
+                            <P class="windy">Km/h</P>
                         </div><hr>
                         <div class="det">
                             <p>Direction</p>
-                            <P>SW (220°)</P>
+                            <P class="wind-direction">0</P>
                         </div><hr>
                         <div class="det">
                             <p>Gust</p>
-                            <P>25.6 km/h</P>
+                            <P class="wind-gust">km/h</P>
                         </div><hr>
                         <div class="det">
                             <p>Beaufort Scale</p>
-                            <P>3 – Gentle Breeze</P>
+                            <P class="beaufort-scale">Breeze</P>
                         </div>
                     </div>
                 </div>
@@ -202,19 +244,19 @@
                     <div class="details">
                         <div class="det">
                             <p>Country</p>
-                            <P>IN</P>
+                            <P class="country-code">IN</P>
                         </div><hr>
                         <div class="det">
                             <p>Timezone</p>
-                            <P>UTC+5.5h</P>
+                            <P class="timezone">UTC+0h</P>
                         </div><hr>
                         <div class="det">
                             <p>Latitude</p>
-                            <P>28.614°</P>
+                            <P class="latitude">0°</P>
                         </div><hr>
                         <div class="det">
                             <p>Longitude</p>
-                            <P>77.209°</P>
+                            <P class="longitude">0°</P>
                         </div>
                     </div>
                 </div>
@@ -225,5 +267,5 @@
         </div>
     </div>
 </body>
-
+<script src="./app.js"></script>
 </html>

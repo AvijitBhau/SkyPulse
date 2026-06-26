@@ -175,6 +175,10 @@ header {
     border-radius: 10px;
 }
 
+.hide {
+    display: none;
+}
+
 #weather-location {
     display: flex;
     justify-content: space-between;
@@ -195,7 +199,6 @@ header {
 
 .heading {
     display: flex;
-    justify-content: space-between;
     align-items: end;
     width: calc(100% - 40px);
 }
@@ -207,6 +210,7 @@ header {
 }
 
 .heading span {
+    margin-left: 10px;
     padding: 1px 10px;
     background-color: rgb(230, 230, 230);
     border-radius: 40px;
@@ -366,7 +370,50 @@ header {
 
 #weather-characteristics progress {
     width: 100%;
-    /* background: linear-gradient(90deg, #818cf8, #6366f1); */
+    height: 5%;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.progress::-webkit-progress-bar {
+    background-color: #e3e3e3;
+    border-radius: 4px;
+}
+
+.progress::-webkit-progress-value {
+    background-image: linear-gradient(90deg, #818cf8, #6366f1);
+    border-radius: 4px;
+    
+}
+
+.progress::-moz-progress-value {
+    background-image: linear-gradient(90deg, #818cf8, #6366f1);
+    border-radius: 4px;
+    
+}
+
+#uv-prog::-webkit-progress-bar {
+    border-radius: 4px;
+    background-color: #c4c4c4;
+}
+
+#uv-prog::-webkit-progress-value {
+    background-image: linear-gradient(90deg, #4ade80, #facc15, #f97316, #ef4444, #8b5cf6);
+    border-radius: 4px;
+}
+
+#uv-prog::-moz-progress-value {
+    background-image: linear-gradient(90deg, #4ade80, #facc15, #f97316, #ef4444, #8b5cf6);
+    border-radius: 4px;
+
+}
+
+.small-titles {
+    display: flex;
+    justify-content: space-between;
+    font-size: small;
+    font-weight: 600;
+    color: rgb(176, 176, 176);
 }
 
 .stat-heading {
@@ -496,8 +543,27 @@ header {
 }
 
 .day-forecast progress {
-    height: 5%;
-    /* background: linear-gradient(90deg, #60a5fa, #f59e0b); */
+    width: 100%;
+    height: 3%;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.day-forecast progress::-webkit-progress-bar {
+    background-color: #e3e3e3;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.day-forecast progress::-webkit-progress-value {
+    background: linear-gradient(90deg, #60a5fa, #f59e0b);
+    border-radius: 4px;
+}
+
+.day-forecast progress::-moz-progress-value {
+    background: linear-gradient(90deg, #60a5fa, #f59e0b);
+    border-radius: 4px;
+
 }
 
 #weather-details {
