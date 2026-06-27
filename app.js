@@ -105,6 +105,19 @@ const updateSelectedPlace = (place) => {
     }
 };
 
+const applyLocationState = (placeData, lat, lon) => {
+    if (!placeData) return;
+
+    latitude = Number.isFinite(lat) ? lat : placeData.latitude ?? latitude;
+    longitude = Number.isFinite(lon) ? lon : placeData.longitude ?? longitude;
+
+    if (placeData.timezone) {
+        currentTimeZone = placeData.timezone;
+    }
+
+    updateSelectedPlace(placeData);
+};
+
 const updateClock = (timeZone = currentTimeZone) => {
     currentTimeZone = timeZone || currentTimeZone;
 
@@ -232,13 +245,16 @@ const requestUserLocation = () => {
             locationPromptAttempts = 0;
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-            const placeInfo = await getPlaceFromCoords(lat, lon) || selectedPlace || {
-                name: inputLocation.value.trim() || "Your location",
+            const placeInfo = await getPlaceFromCoords(lat, lon);
+            const resolvedPlace = placeInfo || {
+                name: "Your location",
                 country: "",
                 country_code: "",
-                timezone: currentTimeZone
+                timezone: currentTimeZone,
+                latitude: lat,
+                longitude: lon
             };
-            await getLocationCoords(placeInfo, lat, lon);
+            await getLocationCoords(resolvedPlace, lat, lon);
         },
         (error) => {
             locationPromptAttempts += 1;
@@ -283,13 +299,7 @@ const getGeocode = async (locatePlace, index = 0) => {
             errorPara.classList.add("hide");
         }
 
-        latitude = placeData.latitude;
-        longitude = placeData.longitude;
-
-        if (placeData && placeData.timezone) {
-            currentTimeZone = placeData.timezone;
-        }
-
+        applyLocationState(placeData, placeData.latitude, placeData.longitude);
         getLocationCoords(placeData, latitude, longitude);
     } catch (err) {
         console.log(err);
@@ -297,32 +307,84 @@ const getGeocode = async (locatePlace, index = 0) => {
 }
 
 const getPlaceFromCoords = async (lat, lon) => {
-    try {
-        const response = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&count=1`);
-        const data = await response.json();
-        const result = data.results && data.results[0];
+    const safeLat = Number(lat);
+    const safeLon = Number(lon);
 
-        if (!result) return null;
-
-        return {
-            name: result.name || result.admin1 || "Your location",
-            country: result.country || "",
-            country_code: result.country_code || "",
-            timezone: result.timezone || currentTimeZone,
-            latitude: lat,
-            longitude: lon
-        };
-    } catch (err) {
-        console.log(err);
+    if (!Number.isFinite(safeLat) || !Number.isFinite(safeLon)) {
         return null;
     }
+
+    const endpoints = [
+        `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${safeLat}&longitude=${safeLon}&count=1`,
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${safeLat}&lon=${safeLon}&zoom=10&accept-language=en`
+    ];
+
+    for (const endpoint of endpoints) {
+        try {
+            const response = await fetch(endpoint, {
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+
+            if (!response.ok) continue;
+
+            const data = await response.json();
+            const result = data.results?.[0] || data;
+
+            if (!result) continue;
+
+            if (data.results && data.results[0]) {
+                return {
+                    name: result.name || result.admin1 || "Your location",
+                    country: result.country || "",
+                    country_code: result.country_code || "",
+                    timezone: result.timezone || currentTimeZone,
+                    latitude: safeLat,
+                    longitude: safeLon
+                };
+            }
+
+            const address = result.address || {};
+            const placeName = address.city || address.town || address.village || address.hamlet || address.suburb || result.name || "Your location";
+            const region = address.state || address.region || "";
+            const country = address.country || "";
+            const countryCode = address.country_code ? address.country_code.toUpperCase() : "";
+
+            return {
+                name: placeName,
+                admin1: region,
+                country,
+                country_code: countryCode,
+                timezone: currentTimeZone,
+                latitude: safeLat,
+                longitude: safeLon
+            };
+        } catch (err) {
+            console.warn("Reverse geocoding failed", err);
+        }
+    }
+
+    return {
+        name: "Your location",
+        country: "",
+        country_code: "",
+        timezone: currentTimeZone,
+        latitude: safeLat,
+        longitude: safeLon
+    };
 };
 
-const getLocationCoords = async (placeData, latitude, longitude) => {
-    const response2 = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m,rain,precipitation,wind_gusts_10m,uv_index,cloud_cover,showers,visibility,snowfall,is_day&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=5`);
+const getLocationCoords = async (placeData, lat, lon) => {
+    const resolvedLat = Number.isFinite(lat) ? lat : latitude;
+    const resolvedLon = Number.isFinite(lon) ? lon : longitude;
+
+    applyLocationState(placeData, resolvedLat, resolvedLon);
+
+    const response2 = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${resolvedLat}&longitude=${resolvedLon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m,rain,precipitation,wind_gusts_10m,uv_index,cloud_cover,showers,visibility,snowfall,is_day&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=5`);
     const data2 = await response2.json();
 
-    changeWeather(placeData, data2);
+    changeWeather(placeData, data2, resolvedLat, resolvedLon);
 }
 
 
@@ -372,7 +434,7 @@ const getDayNightIcon = (isDay, cloudCover) => {
     return "🌙";
 };
 
-const changeWeather = (placeData, data) => {
+const changeWeather = (placeData, data, lat = latitude, lon = longitude) => {
     const current = data.current;
     const weatherCode = data.daily.weather_code[0];
     const status = weatherCodeMap[weatherCode] || { icon: "🌤️", label: "Weather" };
@@ -382,8 +444,8 @@ const changeWeather = (placeData, data) => {
 
     updateClock(placeData.timezone || currentTimeZone);
     timezone.innerHTML = placeData.timezone || "";
-    toLatitude.innerHTML = latitude;
-    toLongitude.innerHTML = longitude;
+    toLatitude.innerHTML = lat;
+    toLongitude.innerHTML = lon;
 
     countryCode[0].innerHTML = placeData.country_code || "";
     countryCode[1].innerHTML = placeData.country || "";
