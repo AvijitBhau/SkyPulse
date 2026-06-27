@@ -58,6 +58,7 @@ const titleCase = (str) => {
     let finalLocation = finalArray.join(" ");
     return finalLocation;
 }
+
 const debounce = (func, delay) => {
     let timer;
 
@@ -70,8 +71,11 @@ const debounce = (func, delay) => {
     };
 }
 const searchLocation = async (query) => {
-    if (query.length < 2) return;
-    
+    if (query.length < 2) {
+        suggestionBox.classList.add("hide");
+        return;
+    } 
+        
     const response = await fetch(
         `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=5`
     );
@@ -87,6 +91,14 @@ const searchLocation = async (query) => {
         suggestions[i].innerHTML = locationName + loactionSubPlace + locationCountry;
     }
     suggestionBox.classList.remove("hide");
+
+    
+    suggestions.forEach((sugg, index) => {
+        sugg.addEventListener("click", () => {
+            inputLocation.value = data.results[index].name;
+            suggestionBox.classList.add("hide");
+        })
+    })
 }
 
 const debouncedSearch = debounce(searchLocation, 400);
@@ -124,7 +136,9 @@ weatherSearchBtn.addEventListener("click", () => {
 
 inputLocation.addEventListener("input", (e) => {
     debouncedSearch(e.target.value);
+
 });
+
 
 const getGeocode = async (locatePlace) => {
     try {
