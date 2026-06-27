@@ -6,7 +6,6 @@ const errorPara = document.querySelector(".error-msg p");
 const currentWeatherIcon = document.querySelector(".day-night-icon");
 const currentTemperature = document.querySelector(".temperature");
 const apparentTemperature = document.querySelector(".some-space");
-const weatherIcon = document.querySelector(".weather-icon p");
 const humidity = document.querySelector(".humid");
 const windSpeed = document.querySelectorAll(".windy");
 const pressure = document.querySelector(".heavy-pressure");
@@ -37,27 +36,16 @@ const highTemp = document.getElementById("highTemp");
 const lowTemp = document.getElementById("lowTemp");
 const suggestionBox = document.getElementById("suggestion-box");
 const suggestions = document.querySelectorAll(".suggestions");
+const locationTracking = document.getElementById("track-location");
+const topDate = document.querySelector(".clock p:first-child");
+const topTime = document.querySelector(".clock p:last-child");
+const degreeLinks = document.querySelectorAll(".degree-link");
 
-
-
-
-
+let selectedPlace = null;
 let latitude = 0, longitude = 0;
-
-const titleCase = (str) => {
-    let finalArray = [];
-    let arr = [];
-    arr = str.split(" ");
-    for (let i = 0; i < arr.length; i++) {
-        let check = arr[i];
-        let firstCapital = check[0].toUpperCase();
-        let havelast = arr[i].slice(1).toLowerCase();
-        let combine = firstCapital + havelast;
-        finalArray.push(combine);
-    }
-    let finalLocation = finalArray.join(" ");
-    return finalLocation;
-}
+let currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+let isFahrenheit = false;
+let latestWeatherData = null;
 
 const debounce = (func, delay) => {
     let timer;
@@ -71,37 +59,116 @@ const debounce = (func, delay) => {
     };
 }
 const searchLocation = async (query) => {
-    if (query.length < 2) {
+    if (query.trim().length < 2) {
         suggestionBox.classList.add("hide");
         return;
-    } 
-        
+    }
+
     const response = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=5`
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5`
     );
-    
+
     const data = await response.json();
-    
+
     console.log(data.results);
 
     for (let i = 0; i < 5; i++) {
-        let locationName = data.results[i].name + ", ";
-        let locationCountry = data.results[i].country;
-        let loactionSubPlace = data.results[i].admin1 + ", " || "";
-        suggestions[i].innerHTML = locationName + loactionSubPlace + locationCountry;
+        const result = data.results[i];
+        if (!result) continue;
+
+        const displayText = `${result.name}${result.admin1 ? `, ${result.admin1}` : ""}, ${result.country}`;
+        suggestions[i].innerHTML = displayText;
+        suggestions[i].dataset.displayText = displayText;
     }
     suggestionBox.classList.remove("hide");
 
-    
     suggestions.forEach((sugg, index) => {
         sugg.addEventListener("click", () => {
-            inputLocation.value = data.results[index].name;
-            suggestionBox.classList.add("hide");
+            const place = data.results[index];
+
+            if (place) {
+                updateSelectedPlace(place);
+                suggestionBox.classList.add("hide");
+            }
         })
     })
 }
 
 const debouncedSearch = debounce(searchLocation, 400);
+
+const updateSelectedPlace = (place) => {
+    selectedPlace = place;
+
+    if (place && place.name) {
+        const displayText = `${place.name}${place.admin1 ? `, ${place.admin1}` : ""}${place.country ? `, ${place.country}` : ""}`;
+        inputLocation.value = displayText;
+    }
+};
+
+const updateClock = (timeZone = currentTimeZone) => {
+    currentTimeZone = timeZone || currentTimeZone;
+
+    const now = new Date();
+    const dateFormatter = new Intl.DateTimeFormat("en", {
+        timeZone: currentTimeZone,
+        weekday: "long",
+        day: "numeric",
+        month: "short"
+    });
+    const timeFormatter = new Intl.DateTimeFormat("en", {
+        timeZone: currentTimeZone,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    });
+
+    if (topDate) topDate.textContent = dateFormatter.format(now);
+    if (topTime) topTime.textContent = timeFormatter.format(now);
+};
+
+const formatTemperature = (value) => {
+    const convertedValue = isFahrenheit ? (value * 9) / 5 + 32 : value;
+    return `${Math.round(convertedValue)}°${isFahrenheit ? "F" : "C"}`;
+};
+
+const updateTemperatureDisplay = () => {
+    if (!latestWeatherData) return;
+
+    const current = latestWeatherData.current;
+
+    if (currentTemperature) currentTemperature.textContent = formatTemperature(current.temperature_2m);
+    if (apparentTemperature) apparentTemperature.textContent = formatTemperature(current.apparent_temperature);
+    if (highTemp) highTemp.textContent = formatTemperature(latestWeatherData.daily.temperature_2m_max[0]);
+    if (lowTemp) lowTemp.textContent = formatTemperature(latestWeatherData.daily.temperature_2m_min[0]);
+
+    for (let i = 0; i < 5; i++) {
+        if (maxTemp[i]) maxTemp[i].textContent = formatTemperature(latestWeatherData.daily.temperature_2m_max[i]);
+        if (minTemp[i]) minTemp[i].textContent = formatTemperature(latestWeatherData.daily.temperature_2m_min[i]);
+    }
+
+    for (let i = 0; i < 9; i++) {
+        if (tempByTime[i]) tempByTime[i].textContent = formatTemperature(latestWeatherData.hourly.temperature_2m[i]);
+    }
+};
+
+const setTemperatureUnit = (unit) => {
+    isFahrenheit = unit === "F";
+
+    degreeLinks.forEach((link) => {
+        const isActive = link.dataset.unit === unit;
+        link.classList.toggle("active", isActive);
+    });
+
+    updateTemperatureDisplay();
+};
+
+degreeLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+        e.preventDefault();
+        setTemperatureUnit(link.dataset.unit);
+    });
+});
 
 function getBeaufort(kmh) {
     if (kmh < 1) return { scale: 0, text: "Calm" };
@@ -120,12 +187,16 @@ function getBeaufort(kmh) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+    updateClock();
+    setInterval(updateClock, 1000);
     getGeocode("New Delhi");
 })
 
 weatherSearchBtn.addEventListener("click", () => {
-    if (inputLocation.value.trim() !== "") {
-        getGeocode(inputLocation.value.trim());
+    const locationToSearch = selectedPlace || inputLocation.value.trim();
+
+    if (locationToSearch) {
+        getGeocode(locationToSearch);
         errorPara.classList.add("hide");
     }
     else {
@@ -135,44 +206,109 @@ weatherSearchBtn.addEventListener("click", () => {
 });
 
 inputLocation.addEventListener("input", (e) => {
+    selectedPlace = null;
     debouncedSearch(e.target.value);
-
 });
 
+locationTracking.addEventListener("click", () => {
+    const isLocalHost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 
-const getGeocode = async (locatePlace) => {
-    try {
-        const response1 = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${locatePlace}&count=1`);
-        const data1 = await response1.json();
-        console.log(data1);
+    if (!navigator.geolocation) {
+        errorPara.textContent = "Geolocation is not supported by this browser.";
+        errorPara.classList.remove("hide");
+        return;
+    }
 
-        if (!data1.results || data1.results.length === 0) {
-            errorPara.textContent = "🔑 Location not found.";
+    if (!window.isSecureContext && !isLocalHost) {
+        errorPara.textContent = "Open the app from localhost or HTTPS to use geolocation.";
+        errorPara.classList.remove("hide");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const placeInfo = await getPlaceFromCoords(lat, lon) || selectedPlace || {
+                name: inputLocation.value.trim() || "Your location",
+                country: "",
+                country_code: "",
+                timezone: currentTimeZone
+            };
+            await getLocationCoords(placeInfo, lat, lon);
+        },
+        (error) => {
+            if (error.code === 1) {
+                errorPara.textContent = "Location access was denied.";
+            } else {
+                errorPara.textContent = "Could not get your location right now.";
+            }
             errorPara.classList.remove("hide");
         }
-        else {
+    );
+})
+
+
+const getGeocode = async (locatePlace, index = 0) => {
+    try {
+        let placeData = locatePlace;
+
+        if (typeof locatePlace === "string") {
+            const safePlace = encodeURIComponent(locatePlace.trim());
+            const response1 = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${safePlace}&count=1`);
+            const data1 = await response1.json();
+            console.log(data1);
+
+            if (!data1.results || data1.results.length === 0) {
+                errorPara.textContent = "🔑 Location not found.";
+                errorPara.classList.remove("hide");
+                return;
+            }
+
+            placeData = data1.results[index];
             errorPara.classList.add("hide");
         }
 
-        latitude = data1.results[0]["latitude"];
-        longitude = data1.results[0]["longitude"];
+        latitude = placeData.latitude;
+        longitude = placeData.longitude;
 
-        timezone.innerHTML = data1.results[0]["timezone"];
-        toLatitude.innerHTML = latitude;
-        toLongitude.innerHTML = longitude;
+        if (placeData && placeData.timezone) {
+            currentTimeZone = placeData.timezone;
+        }
 
-        countryCode[0].innerHTML = data1.results[0]["country_code"];
-        countryCode[1].innerHTML = data1.results[0]["country"];
-        locationHeading.innerHTML = data1.results[0]["name"];
-
-
-        const response2 = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m,rain,precipitation,wind_gusts_10m,uv_index,cloud_cover,showers,visibility,snowfall,is_day&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=5`);
-        const data2 = await response2.json();
-
-        changeWeather(data2);
+        getLocationCoords(placeData, latitude, longitude);
     } catch (err) {
-        console.log()
+        console.log(err);
     }
+}
+
+const getPlaceFromCoords = async (lat, lon) => {
+    try {
+        const response = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&count=1`);
+        const data = await response.json();
+        const result = data.results && data.results[0];
+
+        if (!result) return null;
+
+        return {
+            name: result.name || result.admin1 || "Your location",
+            country: result.country || "",
+            country_code: result.country_code || "",
+            timezone: result.timezone || currentTimeZone,
+            latitude: lat,
+            longitude: lon
+        };
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+};
+
+const getLocationCoords = async (placeData, latitude, longitude) => {
+    const response2 = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m,rain,precipitation,wind_gusts_10m,uv_index,cloud_cover,showers,visibility,snowfall,is_day&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=5`);
+    const data2 = await response2.json();
+
+    changeWeather(placeData, data2);
 }
 
 
@@ -222,14 +358,22 @@ const getDayNightIcon = (isDay, cloudCover) => {
     return "🌙";
 };
 
-const changeWeather = (data) => {
+const changeWeather = (placeData, data) => {
     const current = data.current;
     const weatherCode = data.daily.weather_code[0];
     const status = weatherCodeMap[weatherCode] || { icon: "🌤️", label: "Weather" };
     const isDay = Number(current.is_day);
 
-    currentTemperature.innerHTML = current.temperature_2m + data.current_units.temperature_2m;
-    apparentTemperature.innerHTML = current.apparent_temperature + data.current_units.apparent_temperature;
+    latestWeatherData = data;
+
+    updateClock(placeData.timezone || currentTimeZone);
+    timezone.innerHTML = placeData.timezone || "";
+    toLatitude.innerHTML = latitude;
+    toLongitude.innerHTML = longitude;
+
+    countryCode[0].innerHTML = placeData.country_code || "";
+    countryCode[1].innerHTML = placeData.country || "";
+    locationHeading.innerHTML = placeData.name || "";
     humidity.innerHTML = current.relative_humidity_2m + data.current_units.relative_humidity_2m;
     windSpeed[0].innerHTML = current.wind_speed_10m + " " + data.current_units.wind_speed_10m;
     windSpeed[1].innerHTML = current.wind_speed_10m + " " + data.current_units.wind_speed_10m;
@@ -256,6 +400,7 @@ const changeWeather = (data) => {
     cloudBar.value = current.cloud_cover;
     uvBar.value = current.uv_index;
     changeWeeklyWeather(data);
+    updateTemperatureDisplay();
 }
 
 const changeWeeklyWeather = (data) => {
@@ -275,11 +420,11 @@ const changeWeeklyWeather = (data) => {
             weeklyDescriptions[i].innerHTML = status.label;
         }
 
-        maxTemp[i].innerHTML = data.daily.temperature_2m_max[i] + "°C";
-        minTemp[i].innerHTML = data.daily.temperature_2m_min[i] + "°C";
+        if (maxTemp[i]) maxTemp[i].textContent = formatTemperature(data.daily.temperature_2m_max[i]);
+        if (minTemp[i]) minTemp[i].textContent = formatTemperature(data.daily.temperature_2m_min[i]);
     }
-    highTemp.innerHTML = data.daily.temperature_2m_max[0] + "°C";
-    lowTemp.innerHTML = data.daily.temperature_2m_min[0] + "°C";
+    if (highTemp) highTemp.textContent = formatTemperature(data.daily.temperature_2m_max[0]);
+    if (lowTemp) lowTemp.textContent = formatTemperature(data.daily.temperature_2m_min[0]);
     changeHourlyWeather(data)
 }
 
@@ -293,18 +438,16 @@ const day = (data, n) => {
 const dayTime = (data, n) => {
     let time = new Date(data.hourly.time[n]);
     let getTime = String(time.getHours()).padStart(2, '0') + ":" + String(time.getMinutes()).padStart(2, '0');
-    // console.log(getTime);
     return getTime;
 }
 
 const changeHourlyWeather = (data) => {
-    console.log(data);
     for (let i = 0; i < 9; i++) {
         if (i !== 0) {
             let sampleTime = dayTime(data, i);
             dayTimeHour[i].innerHTML = sampleTime;
         }
-        tempByTime[i].innerHTML = data.hourly.temperature_2m[i] + "°C";
-        precipitation[i].innerHTML = "💧" + data.hourly.precipitation_probability[i] + "%";
+        if (tempByTime[i]) tempByTime[i].textContent = formatTemperature(data.hourly.temperature_2m[i]);
+        if (precipitation[i]) precipitation[i].innerHTML = "💧" + data.hourly.precipitation_probability[i] + "%";
     }
 }
