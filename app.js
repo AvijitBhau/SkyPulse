@@ -116,6 +116,7 @@ const applyLocationState = (placeData, lat, lon) => {
     }
 
     updateSelectedPlace(placeData);
+    updateClock(currentTimeZone);
 };
 
 const updateClock = (timeZone = currentTimeZone) => {
@@ -439,11 +440,13 @@ const changeWeather = (placeData, data, lat = latitude, lon = longitude) => {
     const weatherCode = data.daily.weather_code[0];
     const status = weatherCodeMap[weatherCode] || { icon: "🌤️", label: "Weather" };
     const isDay = Number(current.is_day);
+    const resolvedTimeZone = data.timezone || placeData.timezone || currentTimeZone;
 
     latestWeatherData = data;
+    currentTimeZone = resolvedTimeZone;
 
-    updateClock(placeData.timezone || currentTimeZone);
-    timezone.innerHTML = placeData.timezone || "";
+    updateClock(currentTimeZone);
+    timezone.innerHTML = resolvedTimeZone;
     toLatitude.innerHTML = lat;
     toLongitude.innerHTML = lon;
 
