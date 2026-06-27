@@ -210,7 +210,9 @@ inputLocation.addEventListener("input", (e) => {
     debouncedSearch(e.target.value);
 });
 
-locationTracking.addEventListener("click", () => {
+let locationPromptAttempts = 0;
+
+const requestUserLocation = () => {
     const isLocalHost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 
     if (!navigator.geolocation) {
@@ -227,6 +229,7 @@ locationTracking.addEventListener("click", () => {
 
     navigator.geolocation.getCurrentPosition(
         async (position) => {
+            locationPromptAttempts = 0;
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
             const placeInfo = await getPlaceFromCoords(lat, lon) || selectedPlace || {
@@ -238,15 +241,26 @@ locationTracking.addEventListener("click", () => {
             await getLocationCoords(placeInfo, lat, lon);
         },
         (error) => {
+            locationPromptAttempts += 1;
+
             if (error.code === 1) {
-                errorPara.textContent = "Location access was denied.";
+                errorPara.textContent = "Location access was denied. Please allow it in your browser and click again.";
+                errorPara.classList.remove("hide");
+
+                if (locationPromptAttempts >= 2) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+                }
             } else {
                 errorPara.textContent = "Could not get your location right now.";
+                errorPara.classList.remove("hide");
             }
-            errorPara.classList.remove("hide");
         }
     );
-})
+};
+
+locationTracking.addEventListener("click", requestUserLocation);
 
 
 const getGeocode = async (locatePlace, index = 0) => {
