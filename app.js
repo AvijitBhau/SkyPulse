@@ -47,6 +47,15 @@ let currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 let isFahrenheit = false;
 let latestWeatherData = null;
 
+const changeSearchBtn = () => {
+    if (window.matchMedia("(max-width: 900px)").matches) {
+        weatherSearchBtn.innerHTML = '<a class="fa-solid fa-angles-right"></a>';
+    }
+}
+
+changeSearchBtn();
+window.addEventListener("change", changeSearchBtn);
+
 const debounce = (func, delay) => {
     let timer;
 
@@ -100,7 +109,7 @@ const updateSelectedPlace = (place) => {
     selectedPlace = place;
 
     if (place && place.name) {
-        const displayText = `${place.name}${place.admin1 ? `, ${place.admin1}` : ""}${place.country ? `, ${place.country}` : ""}`;
+        const displayText = `${place.name}${place.country ? `, ${place.country}` : ""}`;
         inputLocation.value = displayText;
     }
 };
